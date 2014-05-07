@@ -29,7 +29,7 @@ public class SlowEchoWebsocket implements AgentWebsocket {
             new Thread("runAfterDelayForSess" + sess.getId()) {
                 public void run () {
                     try {
-                        long  delay = 3000;
+                        long  delay = 1000;
                         String name = msg;
                         if ( msg.matches("^[0-9]+:..*$") ) {
                             String[] parts = msg.split(":");
@@ -38,7 +38,9 @@ public class SlowEchoWebsocket implements AgentWebsocket {
                         }
 
                         Thread.sleep(delay);
-                        sess.getBasicRemote().sendText("hello " + name + "; we are a little slow");
+                        synchronized ( sess ) {
+                            sess.getBasicRemote().sendText("hello " + name + "; we are a little slow");
+                        }
                         LOG.debug("completed response thread for sessId={}, msg={}", sess.getId(), msg);
                     } catch ( Exception exc ) {
                         LOG.error("error on processing request for sessId={}, msg={}", sess.getId(), msg, exc);
