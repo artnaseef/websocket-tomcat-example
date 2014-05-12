@@ -63,8 +63,27 @@
         })
       });
 
+      function formRelativeWsUrl (relUrl) {
+        var result;
+        var host_and_port;
+        var prefix;
+        var path;
+	if ( window.location.protocol == "https:") {
+          prefix = "wss://";
+        } else {
+          prefix = "ws://";
+        }
+
+        host_and_port = window.location.host;
+        path = window.location.pathname.replace(/[^/]*$/, "");
+
+        result = prefix + host_and_port + path + "/" + relUrl;
+
+        return result;
+      }
+
       try {
-          var url = "ws://localhost:8080/ws/agent";
+          var url = formRelativeWsUrl("ws/agent");
           var ws = new WebSocket(url);
           ws.onmessage = function (event) {
               $("#websocket-response").addClass("alert-message");

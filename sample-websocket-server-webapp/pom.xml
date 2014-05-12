@@ -46,6 +46,10 @@
           <configuration>
             <port>8080</port>
             <path>/</path>
+
+            <httpsPort>8443</httpsPort>
+            <keystoreFile>${project.build.outputDirectory}/cert/keystore</keystoreFile>
+            <keystorePass>manager</keystorePass>
           </configuration>
         </plugin>
 
